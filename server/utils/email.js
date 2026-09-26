@@ -1,22 +1,16 @@
-const nodemailer = require('nodemailer');
-
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: parseInt(process.env.SMTP_PORT),
-  secure: false,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-});
-
 const sendOtpEmail = async (to, otp) => {
-  const mailOptions = {
-    from: `"VERA" <${process.env.EMAIL_FROM}>`,
-    to,
+  const url = 'https://api.brevo.com/v3/smtp/email';
+  const apiKey = process.env.BREVO_API_KEY;
+
+  if (!apiKey) {
+    throw new Error('BREVO_API_KEY is missing from environment variables');
+  }
+
+  const payload = {
+    sender: { name: 'VERA', email: process.env.EMAIL_FROM || 'noreply@vera.com' },
+    to: [{ email: to }],
     subject: 'Your VERA Authentication Code',
-    text: `Your verification code is: ${otp}. It will expire in 5 minutes.`,
-    html: `
+    htmlContent: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #333;">Your VERA Authentication Code</h2>
         <p>Use the following 6-digit code to continue:</p>
@@ -25,11 +19,26 @@ const sendOtpEmail = async (to, otp) => {
         </div>
         <p style="color: #888; font-size: 12px; margin-top: 20px;">This code expires in 5 minutes. Do not share this code with anyone.</p>
       </div>
-    `,
+    `
   };
 
-  const result = await transporter.sendMail(mailOptions);
-  return result;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'accept': 'application/json',
+      'api-key': apiKey,
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error('Brevo API Error:', errorText);
+    throw new Error('Failed to send email via Brevo API');
+  }
+
+  return await response.json();
 };
 
 module.exports = { sendOtpEmail };
