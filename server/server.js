@@ -13,7 +13,7 @@ const app = express();
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5174',
+  origin: [process.env.CLIENT_URL, 'https://vera-navy-two.vercel.app', 'http://localhost:5174'].filter(Boolean),
   credentials: true
 }));
 app.use(express.json());
