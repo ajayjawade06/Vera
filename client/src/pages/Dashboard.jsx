@@ -40,7 +40,7 @@ const Dashboard = () => {
         <h1 style={{ fontSize: '28px', fontWeight: 800, background: 'var(--accent)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>VÉRA</h1>
         
         <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-          <div style={{ display: 'flex', gap: '16px', color: 'var(--text-secondary)' }}>
+          <div className="nav-links" style={{ display: 'flex', gap: '16px', color: 'var(--text-secondary)' }}>
             <span style={{ cursor: 'pointer', color: '#fff' }}>Home</span>
             <span style={{ cursor: 'pointer' }}>Profile</span>
             <span style={{ cursor: 'pointer' }}>Security</span>
@@ -60,7 +60,7 @@ const Dashboard = () => {
 
       <main style={{ maxWidth: '1000px', margin: '0 auto' }}>
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} style={{ marginBottom: '40px' }}>
-          <h2 style={{ fontSize: '48px', fontWeight: 700, marginBottom: '16px', lineHeight: 1.2 }}>
+          <h2 className="dashboard-title" style={{ fontSize: '48px', fontWeight: 700, marginBottom: '16px', lineHeight: 1.2 }}>
             {activity === 'game' ? 'Rock Paper Scissors' : 
              activity === 'quiz' ? 'Quick Quiz' : 
              activity === 'datenight' ? 'Date Ideas' : 
@@ -131,6 +131,13 @@ const Dashboard = () => {
         </motion.div>
         )}
       </main>
+      
+      <style>{`
+        @media (max-width: 768px) {
+          .nav-links { display: none !important; }
+          .dashboard-title { font-size: 32px !important; }
+        }
+      `}</style>
     </div>
   );
 };

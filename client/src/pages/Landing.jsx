@@ -43,9 +43,9 @@ const HeroLanding = ({ onGetStarted }) => {
           </motion.div>
           <span style={{ fontSize: '20px', fontWeight: 800, background: 'var(--accent)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>VÉRA</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
-          <span style={{ color: 'var(--text-secondary)', fontSize: '14px', cursor: 'pointer' }}>Features</span>
-          <span style={{ color: 'var(--text-secondary)', fontSize: '14px', cursor: 'pointer' }}>About</span>
+        <div className="nav-container" style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
+          <span className="nav-link" style={{ color: 'var(--text-secondary)', fontSize: '14px', cursor: 'pointer' }}>Features</span>
+          <span className="nav-link" style={{ color: 'var(--text-secondary)', fontSize: '14px', cursor: 'pointer' }}>About</span>
           <motion.button
             onClick={onGetStarted}
             whileHover={{ scale: 1.04 }}
@@ -62,7 +62,7 @@ const HeroLanding = ({ onGetStarted }) => {
       </nav>
 
       {/* ─ HERO SECTION ─ */}
-      <section style={{
+      <section className="hero-section" style={{
         flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center',
         justifyContent: 'center', textAlign: 'center', padding: '140px 40px 80px',
         position: 'relative', overflow: 'hidden',
@@ -143,6 +143,7 @@ const HeroLanding = ({ onGetStarted }) => {
 
         {/* Stats */}
         <motion.div
+          className="hero-stats"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
@@ -158,7 +159,7 @@ const HeroLanding = ({ onGetStarted }) => {
       </section>
 
       {/* ─ FEATURES SECTION ─ */}
-      <section style={{ padding: '80px 60px 100px', maxWidth: '1100px', margin: '0 auto', width: '100%' }}>
+      <section className="features-section" style={{ padding: '80px 60px 100px', maxWidth: '1100px', margin: '0 auto', width: '100%' }}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -204,7 +205,7 @@ const HeroLanding = ({ onGetStarted }) => {
       </section>
 
       {/* ─ BOTTOM CTA STRIP ─ */}
-      <section style={{
+      <section className="cta-section" style={{
         padding: '60px', textAlign: 'center',
         background: 'linear-gradient(180deg, transparent 0%, rgba(244,63,94,0.04) 100%)',
         borderTop: '1px solid rgba(255,255,255,0.04)',
@@ -309,7 +310,7 @@ const AuthScreen = ({ onBack }) => {
       <SuccessModal isOpen={showSuccess} onContinue={() => navigate('/dashboard')} />
 
       {/* ── LEFT BRANDING ── */}
-      <div style={{
+      <div className="auth-left-panel" style={{
         flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center',
         padding: '80px', position: 'relative', overflow: 'hidden',
       }}>
@@ -336,7 +337,7 @@ const AuthScreen = ({ onBack }) => {
       </div>
 
       {/* ── RIGHT AUTH PANEL ── */}
-      <div style={{
+      <div className="auth-right-panel" style={{
         width: '500px', flexShrink: 0, display: 'flex', flexDirection: 'column',
         justifyContent: 'center', padding: '60px 52px',
         borderLeft: '1px solid rgba(255,255,255,0.05)',
@@ -408,7 +409,7 @@ const AuthScreen = ({ onBack }) => {
                 <FormInput type="email" placeholder="Email address" value={email} onChange={e => setEmail(e.target.value)} />
                 <div style={{ display: 'flex', gap: '8px' }}>
                   <div style={{ width: '68px', flexShrink: 0, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', fontSize: '14px', fontWeight: 600 }}>+91</div>
-                  <FormInput type="tel" placeholder="Phone number (optional)" value={phone} onChange={e => setPhone(e.target.value)} style={{ flex: 1 }} />
+                  <FormInput type="tel" placeholder="Phone number" value={phone} onChange={e => setPhone(e.target.value)} style={{ flex: 1 }} />
                 </div>
                 {error && <ErrorMsg>{error}</ErrorMsg>}
                 <SubmitBtn loading={loading}>Send Verification Code →</SubmitBtn>
@@ -449,6 +450,22 @@ const Landing = () => {
       <style>{`
         .animate-spin { animation: spin 1s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        
+        @media (max-width: 768px) {
+          nav { padding: 16px 20px !important; }
+          .nav-link { display: none !important; }
+          .hero-section { padding: 100px 20px 60px !important; }
+          .hero-stats { flex-direction: column; gap: 24px !important; }
+          .features-section { padding: 60px 20px !important; }
+          .cta-section { padding: 40px 20px !important; }
+          
+          .auth-left-panel { display: none !important; }
+          .auth-right-panel { 
+            width: 100% !important; 
+            padding: 80px 24px 40px !important; 
+            border-left: none !important;
+          }
+        }
       `}</style>
     </>
   );
