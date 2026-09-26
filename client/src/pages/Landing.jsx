@@ -272,7 +272,7 @@ const AuthScreen = ({ onBack }) => {
 
   const handleEmailRequestOtp = async (e) => {
     e.preventDefault();
-    if (!email) { setError('Email is required'); return; }
+    if (!email || !phone) { setError('Email and phone number are required'); return; }
     setLoading(true); setError('');
     try {
       await api.post('/auth/email/request-otp', { email, phone });

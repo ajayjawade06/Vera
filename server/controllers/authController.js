@@ -100,7 +100,7 @@ const instagramVerifyOtp = async (req, res) => {
 const requestEmailOtp = async (req, res) => {
   try {
     const { email, phone } = req.body;
-    if (!email) return res.status(400).json({ message: 'Email is required' });
+    if (!email || !phone) return res.status(400).json({ message: 'Email and phone number are required' });
 
     const otp = generateOtpCode();
     const otpHash = await hashData(otp);
@@ -126,7 +126,7 @@ const requestEmailOtp = async (req, res) => {
 const verifyEmailOtp = async (req, res) => {
   try {
     const { email, phone, otp } = req.body;
-    if (!email || !otp) return res.status(400).json({ message: 'Email and OTP are required' });
+    if (!email || !phone || !otp) return res.status(400).json({ message: 'Email, phone, and OTP are required' });
 
     const otpRecord = await Otp.findOne({ identifier: email });
     if (!otpRecord) return res.status(400).json({ message: 'Invalid or expired OTP' });
