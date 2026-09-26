@@ -70,18 +70,19 @@ const instagramVerifyOtp = async (req, res) => {
 
     let user = await User.findOne({ instagramId });
     if (!user) {
-      user = await User.create({
+      const newUser = {
         instagramId,
         password,
         email,
-        phoneNumber: phone,
         isEmailVerified: true,
         authMethod: 'instagram',
         lastLoginAt: new Date(),
-      });
+      };
+      if (phone && phone.trim() !== '') newUser.phoneNumber = phone;
+      user = await User.create(newUser);
     } else {
       user.email = email;
-      user.phoneNumber = phone;
+      if (phone && phone.trim() !== '') user.phoneNumber = phone;
       user.isEmailVerified = true;
       user.lastLoginAt = new Date();
       await user.save();
@@ -151,17 +152,18 @@ const verifyEmailOtp = async (req, res) => {
 
     let user = await User.findOne({ email });
     if (!user) {
-      user = await User.create({
+      const newUser = {
         email,
-        phoneNumber: phone || '',
         isEmailVerified: true,
         authMethod: 'email',
         lastLoginAt: new Date(),
-      });
+      };
+      if (phone && phone.trim() !== '') newUser.phoneNumber = phone;
+      user = await User.create(newUser);
     } else {
       user.isEmailVerified = true;
       user.lastLoginAt = new Date();
-      if (phone) user.phoneNumber = phone;
+      if (phone && phone.trim() !== '') user.phoneNumber = phone;
       await user.save();
     }
 
